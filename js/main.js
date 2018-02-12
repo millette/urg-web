@@ -2,10 +2,25 @@
 'use strict'
 
 $(() => {
+  const $vis = $('#vis')
+  // const visEl = $vis[0]
+
   const yourVlSpec = {
-    width: 1000,
-    height: 700,
-    $schema: 'https://vega.github.io/schema/vega-lite/v2.0.json',
+    $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
+    // width: '100%',
+    // height: '100%',
+    width: 800,
+    height: 600,
+    // width: 1700,
+    // height: 900,
+/*
+    autosize: {
+      type: 'pad', // fit or pad or none
+      resize: true,
+      contains: 'content' // or 'padding' or 'content'
+    },
+*/
+    // actions: false,
     description: 'A simple bar chart with embedded data.',
     transform: [
       // { filter: '!indexof(datum.place, "CIUSSS")' },
@@ -42,7 +57,18 @@ $(() => {
     }
   }
 
-  vegaEmbed('#vis', yourVlSpec)
-    .then(({ view }) => vegaTooltip.vegaLite(view, yourVlSpec))
+  const opts = {
+    // renderer: 'svg',
+    actions: false
+  }
+
+  vegaEmbed($vis[0], yourVlSpec, opts)
+    .then(({ view }) => {
+      // console.log(Object.keys(view), view)
+      const $it = $('svg', $vis)
+      $it.css('width', '100%')
+      $it.css('height', '100%')
+      vegaTooltip.vegaLite(view, yourVlSpec)
+    })
     .catch(console.error)
 })

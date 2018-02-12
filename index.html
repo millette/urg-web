@@ -9,6 +9,7 @@
 
     <link rel="manifest" href="site.webmanifest">
     <link rel="apple-touch-icon" href="icon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulmaswatch@0.6.1/materia/bulmaswatch.min.css" integrity="sha384-u30uXBsbmblmr7pI7fwaRxPuNlECPbRFQsjqKJQ+p8r7fYAm7bhrVycVAxzg+sXR" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vega-tooltip@0.5.1/build/vega-tooltip.min.css" integrity="sha256-5l6oKIICoVDXRpx3oiTsnLDMxMSb5eBVvTDYr7SsvCo=" crossorigin="anonymous">
     <link rel="stylesheet" href="css/main.css">
   </head>
@@ -17,7 +18,19 @@
         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
     <![endif]-->
 
-    <div id="vis"></div>
+    <section class="hero">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title">Urgences au Québec</h1>
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <div id="vis" />
+      </div>
+    </section>
+
     <script src="js/vendor/modernizr-3.5.0.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.2.1.min.js"><\/script>')</script>
