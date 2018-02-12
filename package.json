@@ -1,0 +1,16 @@
+{
+  "name": "urg-web",
+  "version": "0.0.0",
+  "main": "index.js",
+  "author": "Robin Millette <robin@millette.info>",
+  "license": "AGPL-3.0",
+  "scripts": {
+    "dev": "standard && browser-sync start --config bs-config.js",
+    "lint": "standard"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.23.6",
+    "compression": "^1.7.1",
+    "standard": "^10.0.3"
+  }
+}
