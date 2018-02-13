@@ -6,8 +6,8 @@
 $(() => {
   const $vis1 = $('#vis')
   const $selectVis = $('#selectvis')
-  const $before = $('input[name=before]')
-  const $after = $('input[name=after]')
+  // const $before = $('input[name=before]')
+  // const $after = $('input[name=after]')
 
   const width = $vis1.width()
   const height = Math.min(800, $vis1.width() * 0.618)
@@ -106,4 +106,3 @@ $(() => {
     .then(console.log)
     .catch(console.error)
 })
-
