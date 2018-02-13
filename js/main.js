@@ -58,7 +58,7 @@ $(() => {
   }
 
   const opts = {
-    renderer: 'svg',
+    // renderer: 'svg',
     actions: false
   }
 
