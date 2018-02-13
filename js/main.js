@@ -2,25 +2,13 @@
 'use strict'
 
 $(() => {
-  const $vis = $('#vis')
-  // const visEl = $vis[0]
-
   const yourVlSpec = {
     $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
-    // width: '100%',
-    // height: '100%',
-    width: 800,
-    height: 600,
-    // width: 1700,
-    // height: 900,
-/*
     autosize: {
-      type: 'pad', // fit or pad or none
       resize: true,
-      contains: 'content' // or 'padding' or 'content'
+      contains: 'content', // or 'padding' or 'content'
+      type: 'fit' // fit or pad or none
     },
-*/
-    // actions: false,
     description: 'A simple bar chart with embedded data.',
     transform: [
       // { filter: '!indexof(datum.place, "CIUSSS")' },
@@ -57,18 +45,19 @@ $(() => {
     }
   }
 
-  const opts = {
-    // renderer: 'svg',
-    actions: false
-  }
+  const zz = ($vis, spec) => vegaEmbed(
+    $vis[0],
+    {
+      ...spec,
+      width: $vis.width(),
+      height: Math.min(700, $vis.width() * 0.618)
+    },
+    { actions: false }
+  )
+    .then(({ view }) => Promise.all([vegaTooltip.vegaLite(view, spec), view, spec]))
+    .then(([x, view, spec]) => ({ view, spec }))
 
-  vegaEmbed($vis[0], yourVlSpec, opts)
-    .then(({ view }) => {
-      // console.log(Object.keys(view), view)
-      const $it = $('svg', $vis)
-      $it.css('width', '100%')
-      $it.css('height', '100%')
-      vegaTooltip.vegaLite(view, yourVlSpec)
-    })
+  zz($('#vis'), yourVlSpec)
+    .then(console.log)
     .catch(console.error)
 })
