@@ -42,6 +42,18 @@ $(() => {
             calculate: 'datum.place ? slice(datum.place, 0, indexof(datum.place, " / ")) : "NA"',
             as: 'name'
           },
+          {
+            calculate: '100 * datum.pat / datum.civ',
+            as: 'patp'
+          },
+          {
+            calculate: '100 * datum.x24 / datum.civ',
+            as: 'x24p'
+          },
+          {
+            calculate: '100 * datum.x48 / datum.civ',
+            as: 'x48p'
+          }
 /*
           {
             calculate: '(datum.pat > datum.civ) ? (datum.pat / datum.civ) : 0',
@@ -64,12 +76,17 @@ $(() => {
         mark: 'bar',
         encoding: {
           x: {
-            field: 'update',
-            type: 'temporal'
+            bin: true,
+            field: 'patp',
+            // field: 'update',
+            // type: 'temporal'
+            type: 'quantitative'
           },
           y: {
-            aggregate: 'sum',
-            field: 'pat',
+            // bin: true,
+            // aggregate: 'sum',
+            aggregate: 'count',
+            field: 'place',
             type: 'quantitative'
           },
           color: {
@@ -93,23 +110,24 @@ $(() => {
         window.setTimeout(() => {
           const s = { ...spec }
           switch (ev.target.innerText) {
+/*
             case 'civ':
               s.encoding.y.field = 'civ'
               s.title = 'Nombre de civières'
               break
-
+*/
             case 'pat':
-              s.encoding.y.field = 'pat'
+              s.encoding.x.field = 'patp'
               s.title = 'Nombre de patients sur civières'
               break
 
             case 'x24':
-              s.encoding.y.field = 'x24'
+              s.encoding.x.field = 'x24p'
               s.title = 'Nombre de patients sur civières depuis plus de 24h'
               break
 
             case 'x48':
-              s.encoding.y.field = 'x48'
+              s.encoding.x.field = 'x48p'
               s.title = 'Nombre de patients sur civières depuis plus de 48h'
               break
           }
