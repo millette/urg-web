@@ -1,4 +1,4 @@
-/* global vegaEmbed, vegaTooltip $ */
+/* global vegaEmbed, vegaTooltip, PouchDB $ */
 'use strict'
 
 // console.log(Date.parse('2018-02-10'))
@@ -19,11 +19,49 @@ $(() => {
     .then(([view, spec]) => ({ view, spec }))
 
   // const setup = () => window.fetch('places-times.json')
-  const setup = () => window.fetch('highs.json')
+  const setup = () => window.workerPouch.isSupportedBrowser()
+    .then((supported) => {
+      const db = new PouchDB('urg-web-1', supported ? { adapter: 'worker' } : {})
+      return Promise.all([db, db.info()])
+    })
+    .then(([db, info]) => {
+      console.log(info)
+      return db
+    })
+    .then((db) => Promise.all([db, window.fetch('highs.json')]))
+    .then(([db, res]) => Promise.all([db, res.json()]))
+    // .then(([db, json]) => {
+    // return window.fetch('highs.json')
   // const setup = () => window.fetch('lows.json')
-    .then((res) => res.json())
-    .then((json) => {
-      console.log(json[0], json.length)
+    // .then((res) => res.json())
+    .then(([db, json]) => {
+      const j = json.filter(Boolean).map((x) => {
+        const d = x.update.split('T')
+        const id = [
+          x.place.toLowerCase()
+            .replace(/[ -/']+/g, '-')
+            .split('-')
+            .map((y) => y.slice(0, 2))
+            .join(''),
+          d[0],
+          d[1].split(':')[0]
+        ]
+
+        x._id = id.join('-')
+        return x
+      })
+      // console.log(Object.keys(seens).length, Object.keys(seens2).length)
+      // console.log('SEENS:', seens)
+      // console.log(j)
+
+      return db.bulkDocs(j)
+        .then(console.log)
+        .then(() => [db, json])
+      // return json
+    })
+    // .then((json) => {
+    .then(([db, json]) => {
+      console.log(json[0], json.length, Object.keys(db))
       return {
         $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
         width,
@@ -107,38 +145,38 @@ $(() => {
         // $spinner.clone().appendTo($vis1)
         $spinner.show()
 
-        window.setTimeout(() => {
-          const s = { ...spec }
-          switch (ev.target.innerText) {
+        // window.setTimeout(() => {
+        const s = { ...spec }
+        switch (ev.target.innerText) {
 /*
-            case 'civ':
-              s.encoding.y.field = 'civ'
-              s.title = 'Nombre de civières'
-              break
+          case 'civ':
+            s.encoding.y.field = 'civ'
+            s.title = 'Nombre de civières'
+            break
 */
-            case 'pat':
-              s.encoding.x.field = 'patp'
-              s.title = 'Nombre de patients sur civières'
-              break
+          case 'pat':
+            s.encoding.x.field = 'patp'
+            s.title = 'Nombre de patients sur civières'
+            break
 
-            case 'x24':
-              s.encoding.x.field = 'x24p'
-              s.title = 'Nombre de patients sur civières depuis plus de 24h'
-              break
+          case 'x24':
+            s.encoding.x.field = 'x24p'
+            s.title = 'Nombre de patients sur civières depuis plus de 24h'
+            break
 
-            case 'x48':
-              s.encoding.x.field = 'x48p'
-              s.title = 'Nombre de patients sur civières depuis plus de 48h'
-              break
-          }
-          const now = Date.now()
-          zz($vis1, s)
-            .then((x) => {
-              $spinner.hide()
-              console.log((Date.now() - now) / s.data.values.length, Date.now() - now, s.data.values.length, x)
-            })
-            .catch(console.error)
-        }, 1000)
+          case 'x48':
+            s.encoding.x.field = 'x48p'
+            s.title = 'Nombre de patients sur civières depuis plus de 48h'
+            break
+        }
+        const now = Date.now()
+        zz($vis1, s)
+          .then((x) => {
+            $spinner.hide()
+            console.log((Date.now() - now) / s.data.values.length, Date.now() - now, s.data.values.length, x)
+          })
+          .catch(console.error)
+        // }, 1000)
       })
       return spec
     })
