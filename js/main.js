@@ -92,7 +92,7 @@ $(() => {
             calculate: '100 * datum.x48 / datum.civ',
             as: 'x48p'
           }
-/*
+          /*
           {
             calculate: '(datum.pat > datum.civ) ? (datum.pat / datum.civ) : 0',
             as: 'pc'
@@ -101,7 +101,7 @@ $(() => {
             calculate: 'datum.x24 + datum.x48',
             as: 'xtr'
           }
-*/
+          */
         ],
 
         data: {
@@ -148,12 +148,12 @@ $(() => {
         // window.setTimeout(() => {
         const s = { ...spec }
         switch (ev.target.innerText) {
-/*
+          /*
           case 'civ':
             s.encoding.y.field = 'civ'
             s.title = 'Nombre de civières'
             break
-*/
+          */
           case 'pat':
             s.encoding.x.field = 'patp'
             s.title = 'Nombre de patients sur civières'
