@@ -9,8 +9,8 @@
     "lint": "standard"
   },
   "devDependencies": {
-    "browser-sync": "^2.23.6",
-    "compression": "^1.7.1",
+    "browser-sync": "^2.26.7",
+    "compression": "^1.7.4",
     "standard": "^10.0.3"
   }
 }
